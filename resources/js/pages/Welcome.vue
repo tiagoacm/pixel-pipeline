@@ -13,8 +13,19 @@ withDefaults(
 );
 
 const page = usePage();
+
+const currentTeamSlug = computed(() => {
+    if (page.props.currentTeam?.slug) {
+        return page.props.currentTeam.slug;
+    }
+
+    const [, teamSlugFromUrl] = page.url.split('/');
+
+    return teamSlugFromUrl || null;
+});
+
 const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
+    currentTeamSlug.value ? dashboard(currentTeamSlug.value).url : '/',
 );
 </script>
 

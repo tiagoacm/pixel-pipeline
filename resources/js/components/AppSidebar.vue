@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-vue-next';
+import {
+    BriefcaseBusiness,
+    LayoutGrid,
+    UsersRound,
+} from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -17,12 +21,24 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import opportunities from '@/routes/opportunities';
+import users from '@/routes/users';
 import type { NavItem } from '@/types';
 
 const page = usePage();
 
+const currentTeamSlug = computed(() => {
+    if (page.props.currentTeam?.slug) {
+        return page.props.currentTeam.slug;
+    }
+
+    const [, teamSlugFromUrl] = page.url.split('/');
+
+    return teamSlugFromUrl || null;
+});
+
 const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
+    currentTeamSlug.value ? dashboard(currentTeamSlug.value).url : '/',
 );
 
 const mainNavItems = computed<NavItem[]>(() => [
@@ -31,20 +47,19 @@ const mainNavItems = computed<NavItem[]>(() => [
         href: dashboardUrl.value,
         icon: LayoutGrid,
     },
+    {
+        title: 'Oportunidades',
+        href: opportunities.index(),
+        icon: BriefcaseBusiness,
+    },
+    {
+        title: 'Usuários',
+        href: users.index(),
+        icon: UsersRound,
+    },
 ]);
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+const footerNavItems: NavItem[] = [];
 </script>
 
 <template>

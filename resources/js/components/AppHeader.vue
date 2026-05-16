@@ -51,8 +51,18 @@ const page = usePage();
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
+const currentTeamSlug = computed(() => {
+    if (page.props.currentTeam?.slug) {
+        return page.props.currentTeam.slug;
+    }
+
+    const [, teamSlugFromUrl] = page.url.split('/');
+
+    return teamSlugFromUrl || null;
+});
+
 const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
+    currentTeamSlug.value ? dashboard(currentTeamSlug.value).url : '/',
 );
 
 const activeItemStyles =

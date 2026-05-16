@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
 use App\Http\Controllers\Teams\TeamController;
 use App\Http\Controllers\Teams\TeamInvitationController;
 use App\Http\Controllers\Teams\TeamMemberController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('user-password.update');
 
     Route::inertia('settings/appearance', 'settings/Appearance')->name('appearance.edit');
+
+    Route::resource('settings/opportunities', OpportunityController::class)
+        ->except('show')
+        ->names('opportunities');
+
+    Route::patch('settings/opportunities/{opportunity}/status', [OpportunityController::class, 'updateStatus'])
+        ->name('opportunities.update-status');
+
+    Route::resource('settings/users', UserController::class)
+        ->except(['show', 'create', 'edit'])
+        ->names('users');
 
     Route::get('settings/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::post('settings/teams', [TeamController::class, 'store'])->name('teams.store');
