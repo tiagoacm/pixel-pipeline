@@ -12,8 +12,8 @@ applyTo:
 ---
 # Laravel Workflow Guardrails
 
-- Prefer searching project-version docs with `mcp_laravel-boost_search-docs` before substantial Laravel/Inertia changes; exceptions are allowed when the change is trivial or purely mechanical.
+- Always search project-version docs with `mcp_laravel-boost_search-docs` before Laravel/Inertia code changes. You may skip only when the change is trivial or purely mechanical.
 - Prefer existing project conventions and framework idioms over custom patterns.
-- When behavior changes, prefer adding or updating a Pest test and run the smallest relevant test scope using `php artisan test --compact`; if skipped, explain why.
-- After editing PHP files, prefer running `vendor/bin/pint --dirty --format agent`.
+- When behavior changes, add or update a Pest test and run the smallest relevant test scope using `php artisan test --compact`; if skipped, explain why.
+- After editing PHP files, run `vendor/bin/pint --dirty --format agent`.
 - Do not add or change dependencies unless explicitly requested.
